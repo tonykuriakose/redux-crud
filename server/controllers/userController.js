@@ -104,78 +104,78 @@ const fetchData = async (req, res) => {
 };
 
 
-const editprofile = async (req, res) => {
-  try {
-    const name = req.body.name;
-    const orgpassword = req.body.password;
-    const currentPassword = req.body.currentpassword;
-    const newPassword = req.body.newpassword;
-    let updateFields = { name };
-    let passwordCorrect;
-    if (currentPassword.length && newPassword.length) {
-      passwordCorrect = await bcrypt.compare(currentPassword, orgpassword);
-      if (passwordCorrect) {
-        const salt = await bcrypt.genSalt(10);
-        const hashedNewPass = await bcrypt.hash(newPassword, salt);
-        updateFields.password = hashedNewPass;
-      }
-    } else {
-      passwordCorrect = true;
-    }
-    await User.updateOne({ _id: req.body._id }, { $set: updateFields });
-    if (passwordCorrect) {
-      console.log('trureee');
-      res.json({ success: true });
-    } else {
-      console.log('falseeeeeeeee');
-      res.json({ error: "Incorrect password" });
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    return res.json({ error: "Internal Server Error" });
-  }
-};
-
-//upload image
-const uploadImage = async (req, res) => {
+const editProfile = async (req, res) => {
   try {
     const token = req.cookies.token;
+    if (!token) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
     const verified = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = verified.user; 
 
-    // const file = req.file.filename;
-
-    const user = await User.findOne({ _id: verified.user });
+    const { name, currentpassword, newpassword } = req.body;
+    const user = await User.findById(userId);
 
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    const imageUrl = user.profile;
-    console.log(imageUrl,"imageurl");
+    let updateFields = { name };
 
-    if (imageUrl !== "./src/assets/profileimg.jpg") {
-      console.log("2345678");
-      const parsedUrl = new URL(imageUrl);
-      console.log(parsedUrl,"parseUrl");
-      const imageName = path.basename(parsedUrl.pathname);
-      console.log(imageName,"imageName");
-      const folderPath = './public';
-      const imagePath = path.join(folderPath, imageName);
-      if (fs.existsSync(imagePath)) {
-          fs.unlinkSync(imagePath);
-          console.log(`${imageName} has been deleted successfully.`);
-      } else {
-          console.log(`${imageName} does not exist in the folder.`);
+    if (currentpassword && newpassword) {
+      const passwordCorrect = await bcrypt.compare(currentpassword, user.password);
+      if (!passwordCorrect) {
+        return res.status(400).json({ error: "Incorrect current password" });
       }
-  }
+      const salt = await bcrypt.genSalt(10);
+      updateFields.password = await bcrypt.hash(newpassword, salt);
+    }
 
-  const path_image = process.env.IMAGE_PATH + `profileimages/${req.file.filename}`
-  const data = await User.updateOne({ _id: verified.user }, { $set: { profile: path_image } });
-  res.json(data)
-
+    await User.updateOne({ _id: userId }, { $set: updateFields });
+    res.json({ success: true, message: "Profile updated successfully" });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    console.error("Error during profile update:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+
+const uploadImage = async (req, res) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = verified.user; 
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const oldImage = user.profile;
+    if (oldImage && oldImage !== "./src/assets/profileimg.jpg") {
+      const imageName = path.basename(oldImage);
+      const imagePath = path.join(__dirname, "../public/profileimages", imageName);
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+      }
+    }
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
+    }
+
+    const newImagePath = `${process.env.IMAGE_PATH}profileimages/${req.file.filename}`;
+    user.profile = newImagePath;
+    await user.save();
+
+    res.json({ success: true, message: "Profile image updated", imagePath: newImagePath });
+  } catch (error) {
+    console.error("Error during image upload:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -185,6 +185,6 @@ module.exports = {
   fetchData,
   login,
   logout,
-  editprofile,
+  editProfile,
   uploadImage,
 };
