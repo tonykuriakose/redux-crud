@@ -3,22 +3,16 @@ const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
-
 const User = require("../models/user");
 
-//post signup
 const postSignup = async (req, res) => {
-  console.log('calling');
-  
   try {
-    // console.log(req.body);
     const Existuser = await User.findOne({ email: req.body.email });
     if (Existuser) {
       return res.json({ error: "user already exists" });
     } else {
       const saltRounds = 10;
       const salt = await bcrypt.genSalt(saltRounds);
-
       const hashedPassword = await bcrypt.hash(req.body.Password, salt);
 
       const newUser = new User({
@@ -46,38 +40,13 @@ const postSignup = async (req, res) => {
   }
 };
 
-//fetch data
-const fetchData = async (req, res) => {
-  try {
-    // console.log("Here in backend");
 
-    const token = req.cookies.token;
-    if (!token) {
-      return res.status(401).json({ error: "Unauthorized1" });
-    }
-    const verified = jwt.verify(token, process.env.JWT_SECRET);
-    if (!verified) {
-      return res.status(401).json({ error: "Unauthorized2" });
-    }
-    const data = await User.findById(verified.user);
-    if (!data) {
-      return res.status(404).json({ error: "User not found" });
-    }
-    res.json(data);
-  } catch (error) {
-    console.error("error while fetch data:", error);
-  }
-};
-
-//post login
 const login = async (req, res) => {
   try {
     const existingUser = await User.findOne({ email: req.body.email });
-    console.log(existingUser);
     if (!existingUser) {
       return res.json({ emailerr: "User not found" });
     }
-
     const passwordCorrect =await bcrypt.compare(
       req.body.password,
       existingUser.password
@@ -102,23 +71,45 @@ const login = async (req, res) => {
         })
         .json({ success: true });
     }
-
-    // console.log("done");
   } catch (error) {
     console.error("Error during login:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };
 
-//edit profile
+const logout = (req, res) => {
+  res.clearCookie("token").send({ something: "here" });
+};
+
+
+
+const fetchData = async (req, res) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) {
+      return res.status(401).json({ error: "Unauthorized1" });
+    }
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    if (!verified) {
+      return res.status(401).json({ error: "Unauthorized2" });
+    }
+    const data = await User.findById(verified.user);
+    if (!data) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.json(data);
+  } catch (error) {
+    console.error("error while fetch data:", error);
+  }
+};
+
+
 const editprofile = async (req, res) => {
   try {
-    console.log(req.body);
     const name = req.body.name;
     const orgpassword = req.body.password;
     const currentPassword = req.body.currentpassword;
     const newPassword = req.body.newpassword;
-
     let updateFields = { name };
     let passwordCorrect;
     if (currentPassword.length && newPassword.length) {
@@ -131,10 +122,7 @@ const editprofile = async (req, res) => {
     } else {
       passwordCorrect = true;
     }
-    
     await User.updateOne({ _id: req.body._id }, { $set: updateFields });
-    
-    console.log(passwordCorrect);
     if (passwordCorrect) {
       console.log('trureee');
       res.json({ success: true });
@@ -191,10 +179,6 @@ const uploadImage = async (req, res) => {
   }
 };
 
-//logout
-const logout = (req, res) => {
-  res.clearCookie("token").send({ something: "here" });
-};
 
 module.exports = {
   postSignup,
