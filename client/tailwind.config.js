@@ -9,7 +9,8 @@ export default {
       colors:{
         customeBlue:'#283f57',
         customeGreen:'#403e36',
-        customeLightBlue:'#6ecddb'
+        customeLightBlue:'#6ecddb',
+        customeBlack:'#151c1c'
       }
     },
   },

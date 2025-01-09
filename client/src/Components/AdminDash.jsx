@@ -316,21 +316,15 @@ export const AdminDash = () => {
 
       <div className="container mx-auto mt-8 p-2 max-w-2xl">
         <div className="flex justify-center items-center">
-          <h2 className="text-3xl font-bold mb-4">User Details</h2>
+          <h2 className="text-3xl text-blue-950 font-bold mb-4">User Details</h2>
         </div>
         <br></br>
         <br></br>
         {isLoading ? (
           <p>Loading...</p>
         ) : (
-          <table className="min-w-full bg-white border border-gray-300">
+          <table className="min-w-full bg-black border border-gray-300">
             <thead className="bg-gray-200">
-              {/* <tr>
-              <th className="py-2 px-4 border-b">ID</th>
-              <th className="py-2 px-4 border-b">Name</th>
-              <th className="py-2 px-4 border-b">Email</th>
-              <th className="py-2 px-4 border-b">Actions</th>
-            </tr> */}
             </thead>
             <tbody>
               {user.map((user) => (
@@ -341,15 +335,15 @@ export const AdminDash = () => {
                   <td className="py-2 px-4 border-b">
                     <button
                       onClick={() => openEditModal(user.id)}
-                      className="mr-2 px-2 py-1 bg-blue-500 text-white rounded-lg"
+                      className="mr-2 px-4 py-1 bg-blue-500 text-white rounded-lg"
                     >
-                      Edit User
+                      Edit
                     </button>
                     <button
                       onClick={() => handleDelete(user.id)}
                       className="px-2 py-1 bg-red-500 text-white rounded-lg"
                     >
-                      Delete User
+                      Delete
                     </button>
                   </td>
                 </tr>
