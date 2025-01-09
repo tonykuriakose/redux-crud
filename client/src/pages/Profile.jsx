@@ -17,7 +17,6 @@ const Profile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.user.userData);
-  console.log(userData, "&&&&&");
   const [selectedFile, setSelectedFile] = useState(null);
   
   const [userdata, setUserdata] = useState({
@@ -28,7 +27,6 @@ const Profile = () => {
   
   const [previewImage, setPreviewImage] = useState(userData.profile);
 
-  //errors state
   const [errorst, setErrorst] = useState({
     name: false,
     currentpassword: false,
@@ -68,7 +66,6 @@ const Profile = () => {
     setSelectedFile(selectedFile);
     const previewImageUrl = URL.createObjectURL(selectedFile);
     setPreviewImage(previewImageUrl);
-    console.log(previewImageUrl,"##########");
   };
 
   const handleCloseModal = () => {
@@ -87,7 +84,6 @@ const Profile = () => {
   };
 
   const handleSaveChanges = async () => {
-    // console.log(userdata);
     try {
       const error = {
         name: false,
@@ -120,23 +116,18 @@ const Profile = () => {
           valid = false;
           error.newpassword = true;
           errordef.newpassword = "new password can't be empty";
-          console.log("111");
         }
         if (isEmpty(userdata.currentpassword)) {
-          console.log("****");
           valid = false;
           error.currentpassword = true;
           errordef.currentpassword = "current password can't be empty";
         }
       }
       if (isPasswordValid(userdata.newpassword)) {
-        console.log("2222");
         valid = false;
         error.newpassword = true;
         errordef.newpassword = "password is too weak";
       }
-      // console.log( error.newpassword);
-      // console.log( error.newpassword,"$%^&");
       setErrorst(error);
       setErrDef(errordef);
      }
@@ -192,7 +183,7 @@ const Profile = () => {
       <Navbar />
       <div className="max-w-md mx-auto mt-24">
         <div className="flex justify-center items-center">
-          <h2 className="text-4xl font-bold mb-4">PROFILE</h2>
+          <h2 className="text-4xl font-bold mb-4">Profile</h2>
         </div>
         <br></br>
         <br></br>

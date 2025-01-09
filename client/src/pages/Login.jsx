@@ -69,24 +69,18 @@ const Login = () => {
     seterrdefin(errmessage);
     if (valid) {
       try {
-        console.log("#####");
-
         const response = await axios.post(
           "http://localhost:5000/login",
           userCredentials
         );
-        console.log(userCredentials,"^^^^^^^^^^^^^^");
 
         if (response.data.success) {
           const userDataResponse = await axios.get(
             "http://localhost:5000/fetchuserdata"
           );
           dispatch(setUserData(userDataResponse.data));
-          // console.log(userDataResponse.data);
           navigate("/home");
-          console.log("@###");
         } else if (response.data.emailerr) {
-          console.log("sample11");
           setError((previous) => ({
             ...previous,
             emailerr: true,
@@ -106,7 +100,6 @@ const Login = () => {
           }));
         }
       } catch (error) {
-        console.log("sample11asdhfalkhfla");
         console.error(error);
       }
     } else {
@@ -170,8 +163,7 @@ const Login = () => {
             </button>
             <p className="mt-2 text-gray-600 cursor-pointer">
               New user?{" "}
-              <span
-                style={{ color: "blue" }}
+              <span className="text-blue-600"
                 onClick={() => navigate("/signup")}
               >
                 signup

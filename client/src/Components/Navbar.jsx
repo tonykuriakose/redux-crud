@@ -20,7 +20,7 @@ const Navbar = () => {
   };
   return (
     <>
-      <nav className="bg-blue-500 p-5 flex justify-between items-center">
+      <nav className="bg-customeBlue p-5 flex justify-between items-center">
         <div className="flex items-center">
         {userData.profile && (
             <img

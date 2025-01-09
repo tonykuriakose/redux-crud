@@ -67,7 +67,6 @@ const Signup = () => {
       confirmpassworderr: '',
     };
 
-    // Validate email
     if (isEmpty(userData.email)) {
       errors.emailred = true;
       errorMessages.emailerr = "Email can't be empty";
@@ -76,13 +75,10 @@ const Signup = () => {
       errorMessages.emailerr = 'Enter a valid email';
     }
 
-    // Validate name
     if (isEmpty(userData.name)) {
       errors.namered = true;
       errorMessages.nameerr = "Name can't be empty";
     }
-
-    // Validate password
     if (isEmpty(userData.Password)) {
       errors.passwordred = true;
       errorMessages.passworderr = "Password can't be empty";
@@ -91,7 +87,6 @@ const Signup = () => {
       errorMessages.passworderr = 'Password is too weak';
     }
 
-    // Validate confirm password
     if (isEmpty(userData.confirmpassword)) {
       errors.confirmpasswordred = true;
       errorMessages.confirmpassworderr = "Confirm password can't be empty";

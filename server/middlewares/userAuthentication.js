@@ -1,16 +1,19 @@
 const jwt = require("jsonwebtoken");
-
 const auth = (req, res, next) => {
-    try {
-        const token = req.cookies.token;
+  try {
+    // extract token from cookies / header
+    const token = req.cookies.token || req.headers.authorization?.split(" ")[1];
 
-        if (!token) throw new Error("not logined");
-        const verified = jwt.verify(token, process.env.JWT_SECRET)
-        next();
-    } catch (error) {
-        console.log(error.message);
-        res.status(401).send(error.message)
+    if (!token) {
+      return res.status(401).json({ error: "Access denied. No token provided." });
     }
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = verified;
+    next();
+  } catch (error) {
+    console.error("Authentication error:", error.message);
+    res.status(401).json({ error: "Invalid or expired token." });
+  }
 };
 
 module.exports = auth;
