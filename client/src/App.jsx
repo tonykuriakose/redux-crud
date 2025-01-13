@@ -22,8 +22,6 @@ function App() {
       dispatch(setUserData(response.data));
     })
     .catch((error) => {
-      console.log("Hellooo");
-
       console.error('Error fetching user data:', error);
     });
   },[]) 

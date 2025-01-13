@@ -286,17 +286,6 @@ export const AdminDash = () => {
         setIsLoading(false);
       });
       
-     
-  //   const loadData = async () => {
-  //     const res = await axios.get(
-  //       "http://localhost:5000/admin/fetchusertoadmin"
-  //     );
-  //     if (res && res.data && res.data.data) {
-  //       setUser(res.data.data);
-  //     }
-  //   };
-  //   loadData();
-  
   }, [search]);
   console.log("🚀 ~ .then ~ setUser:", user)
   return (

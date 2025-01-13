@@ -22,7 +22,7 @@ const fetchUserDetails = async (req, res) => {
   }
 };
 
-//delete user
+
 const deleteUser = async (req, res) => {
   try {
     const id = req.body.id;
@@ -40,13 +40,11 @@ const deleteUser = async (req, res) => {
   }
 };
 
-///edit user
+
 const editUser = async (req, res) => {
   try {
     if (req.body.value.length) {
-      // console.log(req.body,"********");
       const id = req.body.user_id;
-      console.log(id);
       const newvalue = req.body.value;
       await User.updateOne({ _id: id }, { $set: { name: newvalue } });
     }
@@ -56,16 +54,14 @@ const editUser = async (req, res) => {
   }
 };
  
-// add user
+
 const addUser = async (req, res) => {
   try {
-    console.log("reached");
     const Existuser = await User.findOne({ email: req.body.email });
     if (Existuser) {
       return res.json({ error: "user already exist" });
     }
     const salt = await bcrypt.genSalt();
-
     const hashedpassword = await bcrypt.hash(req.body.Password, salt);
     const newUser = new User({
       name: req.body.name,

@@ -64,12 +64,7 @@ const login = async (req, res) => {
         }
       );
 
-      res
-        .cookie("token", token, {
-          httpOnly: true,
-          maxAge: 1000 * 60 * 60 * 24,
-        })
-        .json({ success: true });
+      res.cookie("token", token, {httpOnly: true,maxAge: 1000 * 60 * 60 * 24}).json({ success: true });
     }
   } catch (error) {
     console.error("Error during login:", error);

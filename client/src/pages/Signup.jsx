@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
+import {isEmpty,isPasswordValid,isEmailValid,passwordcheck,} from '../../helper/validation';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
 import { setUserData } from '../redux/features/userSlice';
-import {
-  isEmpty,
-  isPasswordValid,
-  isEmailValid,
-  passwordcheck,
-} from '../../helper/validation';
+import { useNavigate } from 'react-router-dom';
+
+
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -166,7 +163,7 @@ const Signup = () => {
               className="absolute right-2 bottom-2"
               onClick={() => togglePasswordVisibility('password')}
             >
-              {showPassword ? '👁️' : '👁️‍🗨️'}
+              {showPassword ? '👁️' : '👁️‍🗨️'} 
             </button>
           </div>
           <div className="relative">
@@ -187,7 +184,7 @@ const Signup = () => {
               className="absolute right-2 bottom-2"
               onClick={() => togglePasswordVisibility('confirmpassword')}
             >
-              {showConfirmPassword ? '👁️' : '👁️‍🗨️'}
+              {showConfirmPassword ? '👁️' : '👁️‍🗨️'}👁️
             </button>
           </div>
           <button

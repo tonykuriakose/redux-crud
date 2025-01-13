@@ -8,25 +8,8 @@ const AdminNavbar = ({ users, setUser, setAddModalOpen,setSearch }) => {
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const [originalUserData, setOriginalUserData] = useState(users);
-  
-  // useEffect(()=>{
-  //   setOriginalUserData(users)
-  // },[users])
-
-  // let a=[...users]
-  // console.log(a,"789456123");
-  // console.log("🚀 ~ Admin#########Navbar ~ users:", users)
-  // console.log("🚀 ~ AdminNavbar ~ or&&&&&&&&&iginalUserData:", originalUserData)
-
   const handleSearch = (e) => {
     const searchTerm = e.target.value.trim().toLowerCase();
-    console.log("handlesearch:",searchTerm);
-    // const filteredUsers = originalUserData.filter((user) =>
-    //   user.name.toLowerCase().includes(searchTerm)
-    // );
-    // console.log(filteredUsers,"@#$%^&");
-    // setUser(filteredUsers);
     setSearch(searchTerm)
   };
 
