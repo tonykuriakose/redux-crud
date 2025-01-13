@@ -3,11 +3,7 @@ import AdminNavbar from "../Components/AdminNavbar";
 import DeleteConfirmationModal from "./DeleteConfirm";
 import axios from "axios";
 import { setUserData } from "../redux/features/userSlice";
-import {
-  isEmpty,
-  isPasswordValid,
-  isEmailValid,
-} from "../../helper/validation";
+import { isEmpty,isPasswordValid,isEmailValid} from "../../helper/validation";
 import { useSelector } from "react-redux";
 
 export const AdminDash = () => {
@@ -17,9 +13,7 @@ export const AdminDash = () => {
   const [editerr, setEditerr] = useState(false);
   const [editerrdef, setEditerrdef] = useState("");
   const [open, setOpen] = useState(false);
-
   const usersdata = useSelector((state) => state.user.userData);
-  console.log("user data:@@@@@@", usersdata._id);
 
   const [editname, setEditname] = useState({
     name: "",
@@ -50,7 +44,6 @@ export const AdminDash = () => {
   const [newName, setNewName] = useState("");
   const [delid, setDelid] = useState(null);
 
-  //add user modal
   const openAddModal = () => {
     setAddModalOpen(true);
   };
@@ -95,13 +88,11 @@ export const AdminDash = () => {
       errorMessages.emailerr = "Enter a valid email";
     }
 
-    // Validate name
     if (isEmpty(newUserData.name)) {
       errors.namered = true;
       errorMessages.nameerr = "Name can't be empty";
     }
 
-    // Validate password
     if (isEmpty(newUserData.Password)) {
       errors.passwordred = true;
       errorMessages.passworderr = "Password can't be empty";
@@ -155,7 +146,7 @@ export const AdminDash = () => {
     }
   };
 
-  //edit modal
+
   const openEditModal = (id) => {
     const userToEdit = user.find((item) => item.id === id);
     setEditModalOpen(true);
@@ -180,7 +171,7 @@ export const AdminDash = () => {
     }));
   };
 
-  //delete modal
+
   const handleDelete = async (id) => {
     const userToDelete = user.find((item) => item.id === id);
     setDelUser(userToDelete.name);
@@ -193,7 +184,8 @@ export const AdminDash = () => {
     deletecred(delid);
   };
 
-  ///delete user
+  
+
   const deletecred = (id) => {
     const userToDelete = user.find((item) => item.id == id);
     axios
@@ -226,10 +218,9 @@ export const AdminDash = () => {
       });
   };
 
-  ///edit user
+  
   const handleEdit = () => {
     let valid = true;
-    console.log(editname, "!@#$%^&*(*&^%$#");
     if (isEmpty(editname.value)) {
       valid = false;
       setEditerr(true);
@@ -272,6 +263,9 @@ export const AdminDash = () => {
         });
     }
   };
+
+
+  
   const [search, setSearch] = useState("")
   useEffect(() => {
     axios
@@ -323,7 +317,7 @@ export const AdminDash = () => {
         {isLoading ? (
           <p>Loading...</p>
         ) : (
-          <table className="min-w-full bg-black border border-gray-300">
+          <table className="min-w-full text-black border border-gray-300">
             <thead className="bg-gray-200">
             </thead>
             <tbody>
@@ -362,14 +356,14 @@ export const AdminDash = () => {
       {isEditModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center">
           <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-          <div className="bg-white p-8 rounded-lg z-10 ">
+          <div className="bg-slate-600 p-8 rounded-lg z-10 ">
             <h2 className="text-2xl font-bold mb-4">Edit User Name</h2>
             <label className="block mb-2">New Name:</label>
             <input
               type="text"
               value={editname.value}
               onChange={editvalue}
-              className="border px-4 py-2 mb-4 mr-3"
+              className="border px-4 py-2 mb-4 mr-3 text-black"
             />
             {editerr && <p className="text-red-500 mb-2">{editerrdef}</p>}
             <button
@@ -392,7 +386,7 @@ export const AdminDash = () => {
         <div className="fixed inset-0 flex items-center justify-center">
           <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
           <div
-            className="bg-white p-8 rounded-lg z-10"
+            className="bg-white p-8 rounded-lg z-10 text-black"
             style={{ width: "500px" }}
           >
             <h2 className="text-2xl font-bold mb-4">Add User</h2>
